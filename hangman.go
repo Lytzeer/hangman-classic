@@ -10,11 +10,12 @@ import (
 )
 
 func main() {
+	fmt.Println("Good Luck, you have 10 attempts.")
 	word, long := ChooseWord()
 	fmt.Println(word)
 	fmt.Println(long)
-	mot := InitWord(word)
-	fmt.Println(mot)
+	mot, attempts := InitGame(word)
+	fmt.Println(mot, attempts)
 	mott := ShowWord(mot)
 	fmt.Println(mott)
 }
@@ -43,7 +44,7 @@ func ChooseWord() (string, int) {
 	return list[lent], len(list[lent]) - 1
 }
 
-func InitWord(word string) []string {
+func InitGame(word string) ([]string, int) {
 	mot := []string{}
 	for i := 0; i < len(word)-1; i++ {
 		mot = append(mot, "_")
@@ -53,7 +54,7 @@ func InitWord(word string) []string {
 		letterreveal = rand.Intn(len(mot))
 		mot[letterreveal] = string(word[letterreveal])
 	}
-	return mot
+	return mot, 10
 }
 
 func ShowWord(word []string) string {
