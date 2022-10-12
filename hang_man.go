@@ -10,17 +10,18 @@ import (
 )
 
 func main() {
-	fmt.Println("Good Luck, you have 10 attempts.")
-	word, long := ChooseWord()
-	fmt.Println(word)
-	var nouvmot string
-	for i := 0; i < len(word)-1; i++ {
-		nouvmot += string(word[i])
-	}
-	mot, attempts := InitGame(word)
-	mott := ShowWord(mot)
-	fmt.Println(mott)
-	Play(attempts, nouvmot, mot, long)
+	PosHangman()
+	// fmt.Println("Good Luck, you have 10 attempts.")
+	// word, long := ChooseWord()
+	// fmt.Println(word)
+	// var nouvmot string
+	// for i := 0; i < len(word)-1; i++ {
+	// 	nouvmot += string(word[i])
+	// }
+	// mot, attempts := InitGame(word)
+	// mott := ShowWord(mot)
+	// fmt.Println(mott)
+	// Play(attempts, nouvmot, mot, long)
 }
 
 func ChooseWord() (string, int) {
@@ -103,4 +104,20 @@ func TabtoStr(word []string) string {
 		str += ch
 	}
 	return str
+}
+
+func PosHangman() {
+	positions := []string{}
+	hangman := []string{}
+	hang, _ := ioutil.ReadFile("hangman.txt")
+	for i, ch := range hang {
+		if string(ch) != "=" {
+			hangman = append(hangman, string(ch))
+		} else if string(ch) == "=" && hang[i+1] == 13 {
+			hangman = append(hangman, string(ch))
+			i++
+		} else {
+			positions[j] = hangman[:]
+		}
+	}
 }
