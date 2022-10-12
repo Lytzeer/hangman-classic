@@ -10,6 +10,10 @@ import (
 )
 
 func main() {
+	ChooseWord()
+}
+
+func ChooseWord() {
 	name := os.Args[1]
 	body, err := ioutil.ReadFile(name)
 	if err != nil {
