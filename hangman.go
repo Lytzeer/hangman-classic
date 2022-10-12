@@ -22,30 +22,32 @@ func main() {
 	// fmt.Println(len(gameword))
 }
 
-func ChooseWord() ([]string, int) {
+func ChooseWord() (string, int) {
 	name := os.Args[1]
-	body, err := ioutil.ReadFile(name)
+	rep := []string{}
+	mot := ""
+	content, err := ioutil.ReadFile(name)
+
 	if err != nil {
-		log.Fatalf("unable to read file: %v", err)
-	}
-	list := []string{}
-	hold := ""
-	for _, m := range string(body) {
-		if m != rune(10) {
-			hold = hold + string(m)
-		} else {
-			if hold != "" {
-				list = append(list, hold)
-				fmt.Println(list)
-				hold = ""
+		log.Fatal(err)
+	} else {
+		for _, ch := range content {
+			if ch == 13 {
+				rep = append(rep, mot)
+				mot = ""
+			} else if string(ch) != " " {
+				mot = mot + string(ch)
 			}
 		}
 	}
 	rand.Seed(time.Now().UnixNano())
-	list = append(list, hold)
-	lent := rand.Intn(len(list))
-	return list, len(list[lent])
-	//return list[lent], len(list[lent]) - 1
+	rep = append(rep, mot)
+	lent := rand.Intn(len(rep))
+	word := ""
+	for i := 0; i < len(rep[lent]); i++ {
+		fmt.Println(string(rep[lent][i]))
+	}
+	return word, len(rep[lent])
 }
 
 func InitGame(word string) ([]string, int) {
