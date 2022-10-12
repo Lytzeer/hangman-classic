@@ -71,12 +71,26 @@ func Play(attempts int, word string, mottab []string, long int) {
 			present = false
 			fmt.Print("Choose: ")
 			fmt.Scan(&letter)
-			for i := 0; i < len(word); i++ {
-				if string(word[i]) == letter {
-					mottab[i] = letter
-					present = true
+			if len(letter) > 1 {
+				if len(letter) != len(word) {
+					fmt.Println("Your word is not the size expected")
+				} else {
+					if letter == word {
+						fmt.Println("Congrats !")
+						return
+					} else {
+						fmt.Println("Nice Try !")
+						attempts--
+					}
 				}
-			}
+			} else {
+				for i := 0; i < len(word); i++ {
+					if string(word[i]) == letter {
+						mottab[i] = letter
+						present = true
+					}
+				}
+			}	
 		}
 		if !present {
 			attempts--
