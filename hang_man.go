@@ -71,6 +71,7 @@ func Play(attempts int, word string, mottab []string, long int, list2 []string) 
 			for i := len(list2) - 8; i < len(list2)-1; i++ {
 				fmt.Println(list2[i])
 			}
+			fmt.Println("")
 			fmt.Println("Game over! The correct word was", word)
 			return
 		} else {
@@ -91,6 +92,7 @@ func Play(attempts int, word string, mottab []string, long int, list2 []string) 
 				for num := count; num < count+7; num++ {
 					fmt.Println(list2[num])
 				}
+				fmt.Println("")
 			}
 			count += 7
 		}
