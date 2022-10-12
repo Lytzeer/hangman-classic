@@ -6,13 +6,14 @@ import (
 	"log"
 	"math/rand"
 	"os"
-<<<<<<< HEAD
 	"time"
-=======
->>>>>>> 1a4a1ca1ba7db1ba4dd0621b6b10e9d494f453a0
 )
 
 func main() {
+	ChooseWord()
+}
+
+func ChooseWord() {
 	name := os.Args[1]
 	body, err := ioutil.ReadFile(name)
 	if err != nil {
@@ -30,15 +31,8 @@ func main() {
 			}
 		}
 	}
-<<<<<<< HEAD
 	rand.Seed(time.Now().UnixNano())
 	list = append(list, hold)
 	lent := rand.Intn(len(list))
 	fmt.Println(list[lent])
 }
-=======
-	list = append(list, hold)
-	lent := rand.Intn(len(list))
-	fmt.Println(list[lent])
-}
->>>>>>> 1a4a1ca1ba7db1ba4dd0621b6b10e9d494f453a0
