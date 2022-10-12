@@ -10,8 +10,7 @@ import (
 )
 
 func main() {
-	list2 := []string{}
-	PosHangman()
+	list2 := PosHangman()
 	fmt.Println("Good Luck, you have 10 attempts.")
 	word, long := ChooseWord()
 	fmt.Println(word)
@@ -63,7 +62,8 @@ func InitGame(word string) ([]string, int) {
 }
 
 func Play(attempts int, word string, mottab []string, long int, list2 []string) {
-	count:=0
+	fmt.Println(list2)
+	count := 0
 	var present bool
 	var letter string
 	for word != TabtoStr(mottab) {
@@ -85,11 +85,11 @@ func Play(attempts int, word string, mottab []string, long int, list2 []string) 
 			attempts--
 			if attempts >= 1 {
 				fmt.Println("Not present in the word, ", attempts, " attempts remaining")
-				for num:= count; num<count+7; num++{
+				for num := count; num < count+7; num++ {
 					fmt.Println(list2[num])
 				}
 			}
-			count+=7
+			count += 7
 		}
 		fmt.Println(TabtoStr(mottab))
 	}
@@ -112,7 +112,7 @@ func TabtoStr(word []string) string {
 	return str
 }
 
-func PosHangman() {
+func PosHangman() []string {
 	list2 := []string{}
 	bod, err := ioutil.ReadFile("hangman.txt")
 	if err != nil {
@@ -129,4 +129,6 @@ func PosHangman() {
 			}
 		}
 	}
+	list2 = append(list2, hold2)
+	return list2
 }
