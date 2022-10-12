@@ -10,18 +10,19 @@ import (
 )
 
 func main() {
+	list2 := []string{}
 	PosHangman()
-	// fmt.Println("Good Luck, you have 10 attempts.")
-	// word, long := ChooseWord()
-	// fmt.Println(word)
-	// var nouvmot string
-	// for i := 0; i < len(word)-1; i++ {
-	// 	nouvmot += string(word[i])
-	// }
-	// mot, attempts := InitGame(word)
-	// mott := ShowWord(mot)
-	// fmt.Println(mott)
-	// Play(attempts, nouvmot, mot, long)
+	fmt.Println("Good Luck, you have 10 attempts.")
+	word, long := ChooseWord()
+	fmt.Println(word)
+	var nouvmot string
+	for i := 0; i < len(word)-1; i++ {
+		nouvmot += string(word[i])
+	}
+	mot, attempts := InitGame(word)
+	mott := ShowWord(mot)
+	fmt.Println(mott)
+	Play(attempts, nouvmot, mot, long, list2)
 }
 
 func ChooseWord() (string, int) {
@@ -61,7 +62,8 @@ func InitGame(word string) ([]string, int) {
 	return mot, 10
 }
 
-func Play(attempts int, word string, mottab []string, long int) {
+func Play(attempts int, word string, mottab []string, long int, list2 []string) {
+	count:=0
 	var present bool
 	var letter string
 	for word != TabtoStr(mottab) {
@@ -83,7 +85,11 @@ func Play(attempts int, word string, mottab []string, long int) {
 			attempts--
 			if attempts >= 1 {
 				fmt.Println("Not present in the word, ", attempts, " attempts remaining")
+				for num:= count; num<count+7; num++{
+					fmt.Println(list2[num])
+				}
 			}
+			count+=7
 		}
 		fmt.Println(TabtoStr(mottab))
 	}
@@ -107,17 +113,20 @@ func TabtoStr(word []string) string {
 }
 
 func PosHangman() {
-	positions := []string{}
-	hangman := []string{}
-	hang, _ := ioutil.ReadFile("hangman.txt")
-	for i, ch := range hang {
-		if string(ch) != "=" {
-			hangman = append(hangman, string(ch))
-		} else if string(ch) == "=" && hang[i+1] == 13 {
-			hangman = append(hangman, string(ch))
-			i++
+	list2 := []string{}
+	bod, err := ioutil.ReadFile("hangman.txt")
+	if err != nil {
+		log.Fatalf("unable to read file: %v", err)
+	}
+	hold2 := ""
+	for _, d := range string(bod) {
+		if d != 10 {
+			hold2 = hold2 + string(d)
 		} else {
-			positions[j] = hangman[:]
+			if hold2 != "" {
+				list2 = append(list2, hold2)
+				hold2 = ""
+			}
 		}
 	}
 }
