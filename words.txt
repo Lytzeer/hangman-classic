@@ -1,4 +1,4 @@
-éléphant
+elephant
 voiture
 lampadaire
 conditionner
@@ -11,7 +11,7 @@ escalade
 arrachement
 tramway
 autobus
-échafaudage
+echafaudage
 ordinateur
 peinture
 macintosh
