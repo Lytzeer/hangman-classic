@@ -68,6 +68,9 @@ func Play(attempts int, word string, mottab []string, long int, list2 []string) 
 	var letter string
 	for word != TabtoStr(mottab) {
 		if attempts == 0 {
+			for i := len(list2) - 8; i < len(list2)-1; i++ {
+				fmt.Println(list2[i])
+			}
 			fmt.Println("Game over! The correct word was", word)
 			return
 		} else {
