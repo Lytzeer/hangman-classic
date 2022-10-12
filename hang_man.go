@@ -62,7 +62,6 @@ func InitGame(word string) ([]string, int) {
 }
 
 func Play(attempts int, word string, mottab []string, long int, list2 []string) {
-	fmt.Println(list2)
 	count := 0
 	var present bool
 	var letter string
@@ -78,6 +77,15 @@ func Play(attempts int, word string, mottab []string, long int, list2 []string) 
 			present = false
 			fmt.Print("Choose: ")
 			fmt.Scan(&letter)
+			if len(letter) > 1 {
+				if letter == word {
+					fmt.Println("Congrats !")
+					return
+				} else {
+					attempts--
+					count += 7
+				}
+			}
 			for i := 0; i < len(word); i++ {
 				if string(word[i]) == letter {
 					mottab[i] = letter
