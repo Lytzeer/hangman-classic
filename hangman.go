@@ -10,10 +10,12 @@ import (
 )
 
 func main() {
-	ChooseWord()
+	word,long := ChooseWord()
+	fmt.Println(word)
+	fmt.Println(long)
 }
 
-func ChooseWord() {
+func ChooseWord() (string,int){
 	name := os.Args[1]
 	body, err := ioutil.ReadFile(name)
 	if err != nil {
@@ -34,5 +36,10 @@ func ChooseWord() {
 	rand.Seed(time.Now().UnixNano())
 	list = append(list, hold)
 	lent := rand.Intn(len(list))
-	fmt.Println(list[lent])
+	return list[lent],len(list[lent])-1
 }
+// func randletters() {
+// 	for 0 len mot/2-1
+// rand mot 
+// mot[rand] tets[rand] == mot[rand]
+// }
