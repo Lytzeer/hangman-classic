@@ -137,7 +137,7 @@ func Play(attempts int, word string, mottab []string, list2 []string, count int)
 func ShowWord(word []string) string {
 	var motstr string
 	for _, ch := range word {
-		motstr += " " + ch
+		motstr += "" + ch
 	}
 	return motstr
 }

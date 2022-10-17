@@ -13,30 +13,31 @@ import (
 var file []byte
 
 func main() {
+	Game := GameData{}
 	list2 := PosHangman()
-	fmt.Println("Good Luck, you have 10 attempts.")
-	word, _ := ChooseWord()
-	fmt.Println(word)
-	var nouvmot string
-	for i := 0; i < len(word)-1; i++ {
-		nouvmot += string(word[i])
-	}
-	mot, attempts := InitGame(word)
-	mott := ShowWord(mot)
-	fmt.Println(mott)
 	if len(os.Args) > 2 {
 		if os.Args[2] == "--StartWith" {
-			Game := GameData{}
 			filename := os.Args[3]
 			data, _ := ioutil.ReadFile(filename)
 			json.Unmarshal(data, &Game)
-			Play(Game.Attempts, Game.Solution, Game.Word, Game.Letters_used)
+			fmt.Println("Welcome back, you have", Game.Attempts, "attemps remaining!")
+			fmt.Println(ShowWord(Game.Word))
+			Play(Game.Attempts, Game.Solution, Game.Word, list2, Game.Count_line)
 		}
-
+	} else {
+		fmt.Println("Good Luck, you have ", Game.Attempts, " attempts.")
+		Game.Solution = ChooseWord()
+		var nouvmot string
+		for i := 0; i < len(Game.Solution)-1; i++ {
+			nouvmot += string(Game.Solution[i])
+		}
+		Game.Word, Game.Attempts = InitGame(Game.Solution)
+		mott := ShowWord(Game.Word)
+		fmt.Println(mott)
+		Play(Game.Attempts, nouvmot, Game.Word, list2, 0)
 	}
-	Play(attempts, nouvmot, mot, list2)
 }
-func ChooseWord() (string, int) {
+func ChooseWord() string {
 	name := os.Args[1]
 	body, err := ioutil.ReadFile(name)
 	if err != nil {
@@ -57,7 +58,7 @@ func ChooseWord() (string, int) {
 	rand.Seed(time.Now().UnixNano())
 	list = append(list, hold)
 	lent := rand.Intn(len(list))
-	return list[lent], len(list[lent]) - 1
+	return list[lent]
 }
 func InitGame(word string) ([]string, int) {
 	mot := []string{}
@@ -71,8 +72,8 @@ func InitGame(word string) ([]string, int) {
 	}
 	return mot, 10
 }
-func Play(attempts int, word string, mottab []string, list2 []string) {
-	count := 0
+func Play(attempts int, word string, mottab []string, list2 []string, count int) {
+	//count := 0
 	var present bool
 	var letter string
 	wowowo := []string{}
@@ -136,7 +137,7 @@ func Play(attempts int, word string, mottab []string, list2 []string) {
 func ShowWord(word []string) string {
 	var motstr string
 	for _, ch := range word {
-		motstr += " " + ch
+		motstr += "" + ch
 	}
 	return motstr
 }
