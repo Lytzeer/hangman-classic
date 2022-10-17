@@ -23,7 +23,6 @@ func main() {
 	fmt.Println(mott)
 	Play(attempts, nouvmot, mot, long, list2)
 }
-
 func ChooseWord() (string, int) {
 	name := os.Args[1]
 	body, err := ioutil.ReadFile(name)
@@ -47,7 +46,6 @@ func ChooseWord() (string, int) {
 	lent := rand.Intn(len(list))
 	return list[lent], len(list[lent]) - 1
 }
-
 func InitGame(word string) ([]string, int) {
 	mot := []string{}
 	for i := 0; i < len(word)-1; i++ {
@@ -60,7 +58,6 @@ func InitGame(word string) ([]string, int) {
 	}
 	return mot, 10
 }
-
 func Play(attempts int, word string, mottab []string, long int, list2 []string) {
 	count := 0
 	var present bool
@@ -97,18 +94,17 @@ func Play(attempts int, word string, mottab []string, long int, list2 []string) 
 			attempts--
 			if attempts >= 1 {
 				fmt.Println("Not present in the word, ", attempts, " attempts remaining")
-				for num := count; num < count+7; num++ {
+				for num := count; num < count+8; num++ {
 					fmt.Println(list2[num])
 				}
 				fmt.Println("")
 			}
-			count += 7
+			count += 8
 		}
 		fmt.Println(TabtoStr(mottab))
 	}
 	fmt.Println("Congrats !")
 }
-
 func ShowWord(word []string) string {
 	var motstr string
 	for _, ch := range word {
@@ -116,7 +112,6 @@ func ShowWord(word []string) string {
 	}
 	return motstr
 }
-
 func TabtoStr(word []string) string {
 	str := ""
 	for _, ch := range word {
@@ -124,7 +119,6 @@ func TabtoStr(word []string) string {
 	}
 	return str
 }
-
 func PosHangman() []string {
 	list2 := []string{}
 	bod, err := ioutil.ReadFile("hangman.txt")
