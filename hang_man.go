@@ -24,19 +24,13 @@ func main() {
 	mot, attempts := InitGame(word)
 	mott := ShowWord(mot)
 	fmt.Println(mott)
-	if os.Args[2] == "--StartWith" {
-		filename := os.Args[3]
-		data, _ := ioutil.ReadFile(filename)
-		fmt.Println(data)
-		data = []byte(data)
-		fmt.Println(data)
-		var enr string
-		err := json.Unmarshal(data, enr)
-		fmt.Println(err)
-		fmt.Println(file)
-		fmt.Println(enr)
-		fmt.Println(string(data))
-		fmt.Println((data[3]))
+	if len(os.Args) > 2 {
+		if os.Args[2] == "--StartWith" {
+			Game := GameData{}
+			filename := os.Args[3]
+			data, _ := ioutil.ReadFile(filename)
+			json.Unmarshal(data, &Game)
+		}
 
 	}
 	Play(attempts, nouvmot, mot, long, list2)
@@ -255,19 +249,31 @@ func Save(a int, count int, w string, m []string, petitcul []string) {
 	filename := "save.txt"
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
 		_, err := os.Create(filename)
-		if err != nil {
+		if err == nil {
 			panic(err)
 		}
+	} else {
+		if err == nil {
+			Game := GameData{w, a, count, m, petitcul}
+			data, err := json.Marshal(Game)
+			if err == nil {
+				fmt.Println(data)
+				fmt.Println(Game.Attempts)
+				ioutil.WriteFile("save.txt", data, 0644)
+				fmt.Println("caca")
+			} else {
+				fmt.Println(err)
+			}
+		} else {
+			fmt.Println("b")
+		}
 	}
-	var data []string
-	data = append(data, Itoa(a))
-	data = append(data, Itoa(count))
-	data = append(data, string(w))
-	data = append(data, string(TabtoStr(m)))
-	for i := 0; i < len(petitcul); i++ {
-		data = append(data, petitcul[i])
-	}
-	file, _ = json.Marshal(data)
-	fmt.Println(string(file))
-	ioutil.WriteFile(filename, file, 0644)
+}
+
+type GameData struct {
+	Solution     string
+	Attempts     int
+	Count_line   int
+	Word         []string
+	Letters_used []string
 }
