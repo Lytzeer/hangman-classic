@@ -23,7 +23,6 @@ func main() {
 	fmt.Println(mott)
 	Play(attempts, nouvmot, mot, long, list2)
 }
-
 func ChooseWord() (string, int) {
 	name := os.Args[1]
 	body, err := ioutil.ReadFile(name)
@@ -47,7 +46,6 @@ func ChooseWord() (string, int) {
 	lent := rand.Intn(len(list))
 	return list[lent], len(list[lent]) - 1
 }
-
 func InitGame(word string) ([]string, int) {
 	mot := []string{}
 	for i := 0; i < len(word)-1; i++ {
@@ -60,12 +58,12 @@ func InitGame(word string) ([]string, int) {
 	}
 	return mot, 10
 }
-
 func Play(attempts int, word string, mottab []string, long int, list2 []string) {
 	//letter_list := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
 	count := 0
 	var present bool
 	var letter string
+	wowowo := []string{}
 	for word != TabtoStr(mottab) {
 		if attempts <= 0 {
 			fmt.Println()
@@ -78,6 +76,9 @@ func Play(attempts int, word string, mottab []string, long int, list2 []string) 
 			present = false
 			fmt.Print("Choose: ")
 			fmt.Scan(&letter)
+			if IsUse(letter, wowowo) {
+				present = true
+			}
 			if len(letter) > 1 {
 				if letter == word {
 					fmt.Println("Congrats !")
@@ -99,17 +100,21 @@ func Play(attempts int, word string, mottab []string, long int, list2 []string) 
 			if attempts >= 1 {
 				fmt.Println("Not present in the word, ", attempts, " attempts remaining")
 				fmt.Println()
+				wowowo = append(wowowo, letter)
 				for num := count; num < count+8; num++ {
 					fmt.Println(list2[num])
 				}
 			}
 			count += 8
 		}
+		if present && IsUse(letter, wowowo){
+			PrintLetterUse(wowowo)
+			fmt.Println()
+		}
 		fmt.Println(TabtoStr(mottab))
 	}
 	PrintWinLoose(true, word)
 }
-
 func ShowWord(word []string) string {
 	var motstr string
 	for _, ch := range word {
@@ -117,7 +122,6 @@ func ShowWord(word []string) string {
 	}
 	return motstr
 }
-
 func TabtoStr(word []string) string {
 	str := ""
 	for _, ch := range word {
@@ -125,7 +129,6 @@ func TabtoStr(word []string) string {
 	}
 	return str
 }
-
 func PosHangman() []string {
 	list2 := []string{}
 	bod, err := ioutil.ReadFile("hangman.txt")
@@ -150,10 +153,10 @@ func PosHangman() []string {
 func IsUse(letter string, letter_list []string) bool {
 	for i := 0; i < len(letter_list); i++ {
 		if letter == letter_list[i] {
-			return false
+			return true
 		}
 	}
-	return true
+	return false
 }
 
 func PrintLetterUse(letter_use []string) {
