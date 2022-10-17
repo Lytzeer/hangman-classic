@@ -15,7 +15,7 @@ var file []byte
 func main() {
 	list2 := PosHangman()
 	fmt.Println("Good Luck, you have 10 attempts.")
-	word, long := ChooseWord()
+	word, _ := ChooseWord()
 	fmt.Println(word)
 	var nouvmot string
 	for i := 0; i < len(word)-1; i++ {
@@ -30,10 +30,11 @@ func main() {
 			filename := os.Args[3]
 			data, _ := ioutil.ReadFile(filename)
 			json.Unmarshal(data, &Game)
+			Play(Game.Attempts, Game.Solution, Game.Word, Game.Letters_used)
 		}
 
 	}
-	Play(attempts, nouvmot, mot, long, list2)
+	Play(attempts, nouvmot, mot, list2)
 }
 func ChooseWord() (string, int) {
 	name := os.Args[1]
@@ -70,7 +71,7 @@ func InitGame(word string) ([]string, int) {
 	}
 	return mot, 10
 }
-func Play(attempts int, word string, mottab []string, long int, list2 []string) {
+func Play(attempts int, word string, mottab []string, list2 []string) {
 	count := 0
 	var present bool
 	var letter string
