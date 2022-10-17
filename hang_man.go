@@ -66,7 +66,7 @@ func Play(attempts int, word string, mottab []string, long int, list2 []string) 
 	var present bool
 	var letter string
 	for word != TabtoStr(mottab) {
-		if attempts == 0 {
+		if attempts <= 0 {
 			fmt.Println()
 			for i := len(list2) - 9; i < len(list2)-1; i++ {
 				fmt.Println(list2[i])
@@ -145,4 +145,41 @@ func PosHangman() []string {
 	}
 	list2 = append(list2, hold2)
 	return list2
+}
+
+func IsUse(letter string, letter_list []string) bool {
+	for i := 0; i < len(letter_list); i++ {
+		if letter == letter_list[i] {
+			return false
+		}
+	}
+	return true
+}
+
+func PrintLetterUse(letter_use []string) {
+	word := "Letters already used : "
+	if len(letter_use) == 0 {
+		word += "None"
+		fmt.Println(word)
+		return
+	} else {
+		for i := 0; i < len(letter_use)-1; i++ {
+			word += letter_use[i] + " "
+		}
+		word += letter_use[len(letter_use)-1]
+		fmt.Println(word)
+		return
+	}
+}
+
+func PrintWinLoose(b bool, tofind string) {
+	if b == true {
+		fmt.Println("Congrats !")
+		return
+	} else {
+		word := "You loose ! The word you have to find was : "
+		word += tofind
+		fmt.Println(word)
+		return
+	}
 }
