@@ -22,13 +22,13 @@ func main() {
 	mot, attempts := InitGame(word)
 	mott := ShowWord(mot)
 	fmt.Println(mott)
-	if os.Args[2] == "--StartWith" {
-		filename := os.Args[3]
-		data, _ := ioutil.ReadFile(filename)
-		data = []byte(data)
-		err := json.Unmarshal(data, &data)
-		fmt.Println(err)
-		fmt.Println(data)
+	if len(os.Args) > 2 {
+		if os.Args[2] == "--StartWith" {
+			Game := GameData{}
+			filename := os.Args[3]
+			data, _ := ioutil.ReadFile(filename)
+			json.Unmarshal(data, &Game)
+		}
 
 	}
 	Play(attempts, nouvmot, mot, long, list2)
@@ -247,21 +247,31 @@ func Save(a int, count int, w string, m []string, petitcul []string) {
 	filename := "save.txt"
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
 		_, err := os.Create(filename)
-		if err != nil {
+		if err == nil {
 			panic(err)
 		}
+	} else {
+		if err == nil {
+			Game := GameData{w, a, count, m, petitcul}
+			data, err := json.Marshal(Game)
+			if err == nil {
+				fmt.Println(data)
+				fmt.Println(Game.Attempts)
+				ioutil.WriteFile("save.txt", data, 0644)
+				fmt.Println("caca")
+			} else {
+				fmt.Println(err)
+			}
+		} else {
+			fmt.Println("b")
+		}
 	}
-	var data string
-	data += Itoa(a)
-	data += (" ")
-	data += Itoa(count)
-	data += (" ")
-	data += w
-	data += (" ")
-	data += TabtoStr(m)
-	data += (" ")
-	data += TabtoStr(petitcul)
-	file, _ := json.Marshal(data)
-	fmt.Println(file)
-	ioutil.WriteFile(filename, file, 0644)
+}
+
+type GameData struct {
+	Solution     string
+	Attempts     int
+	Count_line   int
+	Word         []string
+	Letters_used []string
 }

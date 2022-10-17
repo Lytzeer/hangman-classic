@@ -1,1 +1,1 @@
-"10  arrachement ___a_h_m___ "
+{"Solution":"macintosh","Attempts":9,"Count_line":8,"Word":["_","a","c","i","_","_","_","s","h"],"Letters_used":["z"]}
