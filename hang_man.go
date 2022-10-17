@@ -21,6 +21,7 @@ func main() {
 	mot, attempts := InitGame(word)
 	mott := ShowWord(mot)
 	fmt.Println(mott)
+
 	Play(attempts, nouvmot, mot, long, list2)
 }
 func ChooseWord() (string, int) {
@@ -59,7 +60,6 @@ func InitGame(word string) ([]string, int) {
 	return mot, 10
 }
 func Play(attempts int, word string, mottab []string, long int, list2 []string) {
-	//letter_list := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
 	count := 0
 	var present bool
 	var letter string
@@ -76,6 +76,10 @@ func Play(attempts int, word string, mottab []string, long int, list2 []string) 
 			present = false
 			fmt.Print("Choose: ")
 			fmt.Scan(&letter)
+			if letter == "STOP"{
+				
+				return
+			}
 			if IsUse(letter, wowowo) {
 				present = true
 			}
@@ -186,3 +190,4 @@ func PrintWinLoose(b bool, tofind string) {
 		return
 	}
 }
+
