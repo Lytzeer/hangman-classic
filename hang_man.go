@@ -62,7 +62,7 @@ func Play(attempts int, word string, mottab []string, long int, list2 []string) 
 	count := 0
 	var present bool
 	var letter string
-	var wowowo string
+	wowowo := []string{}
 	for word != TabtoStr(mottab) {
 		if attempts <= 0 {
 			fmt.Println()
@@ -76,6 +76,9 @@ func Play(attempts int, word string, mottab []string, long int, list2 []string) 
 			present = false
 			fmt.Print("Choose: ")
 			fmt.Scan(&letter)
+			if IsUse(letter, wowowo) {
+				present = true
+			}
 			if len(letter) > 1 {
 				if letter == word {
 					fmt.Println("Congrats !")
@@ -97,14 +100,18 @@ func Play(attempts int, word string, mottab []string, long int, list2 []string) 
 			if attempts >= 1 {
 				fmt.Println("Not present in the word, ", attempts, " attempts remaining")
 				fmt.Println()
+				wowowo = append(wowowo, letter)
 				for num := count; num < count+8; num++ {
 					fmt.Println(list2[num])
 				}
 			}
 			count += 8
 		}
+		if present && IsUse(letter, wowowo){
+			PrintLetterUse(wowowo)
+			fmt.Println()
+		}
 		fmt.Println(TabtoStr(mottab))
-		fmt.Println(wowowo)
 	}
 	fmt.Println("Congrats !")
 }
@@ -146,10 +153,10 @@ func PosHangman() []string {
 func IsUse(letter string, letter_list []string) bool {
 	for i := 0; i < len(letter_list); i++ {
 		if letter == letter_list[i] {
-			return false
+			return true
 		}
 	}
-	return true
+	return false
 }
 
 func PrintLetterUse(letter_use []string) {
