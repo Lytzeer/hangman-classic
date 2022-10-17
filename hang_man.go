@@ -59,7 +59,6 @@ func InitGame(word string) ([]string, int) {
 	return mot, 10
 }
 func Play(attempts int, word string, mottab []string, long int, list2 []string) {
-	//letter_list := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
 	count := 0
 	var present bool
 	var letter string
@@ -76,6 +75,9 @@ func Play(attempts int, word string, mottab []string, long int, list2 []string) 
 			present = false
 			fmt.Print("Choose: ")
 			fmt.Scan(&letter)
+			if Accent(letter) {
+				letter = AccentToLetters(letter)
+			}
 			if IsUse(letter, wowowo) {
 				present = true
 			}
@@ -107,7 +109,7 @@ func Play(attempts int, word string, mottab []string, long int, list2 []string) 
 			}
 			count += 8
 		}
-		if present && IsUse(letter, wowowo){
+		if present && IsUse(letter, wowowo) {
 			PrintLetterUse(wowowo)
 			fmt.Println()
 		}
@@ -185,4 +187,25 @@ func PrintWinLoose(b bool, tofind string) {
 		fmt.Println(word)
 		return
 	}
+}
+
+func AccentToLetters(letter string) string {
+	rep := ""
+	letter_rune := []rune(letter)
+	if letter_rune[0] >= rune(232) && letter_rune[0] <= rune(235) {
+		rep = "e"
+	} else if letter_rune[0] >= rune(224) && letter_rune[0] <= rune(230) {
+		rep = "a"
+	} else if letter_rune[0] >= rune(236) && letter_rune[0] <= rune(240) {
+		return "i"
+	} else if letter_rune[0] == rune(240) || letter_rune[0] >= rune(242) && letter_rune[0] <= rune(248) {
+		return "o"
+	} else if letter_rune[0] >= rune(249) && letter_rune[0] <= rune(252) {
+		return "u"
+	}
+	return rep
+}
+
+func Accent(letter string) bool {
+	return []rune(letter)[0] > 128
 }
