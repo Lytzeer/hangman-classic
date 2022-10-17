@@ -62,6 +62,7 @@ func InitGame(word string) ([]string, int) {
 }
 
 func Play(attempts int, word string, mottab []string, long int, list2 []string) {
+	//letter_list := []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
 	count := 0
 	var present bool
 	var letter string
@@ -71,8 +72,7 @@ func Play(attempts int, word string, mottab []string, long int, list2 []string) 
 			for i := len(list2) - 9; i < len(list2)-1; i++ {
 				fmt.Println(list2[i])
 			}
-			//fmt.Println("")
-			fmt.Println("Game over! The correct word was", word)
+			PrintWinLoose(false, word)
 			return
 		} else {
 			present = false
@@ -107,7 +107,7 @@ func Play(attempts int, word string, mottab []string, long int, list2 []string) 
 		}
 		fmt.Println(TabtoStr(mottab))
 	}
-	fmt.Println("Congrats !")
+	PrintWinLoose(true, word)
 }
 
 func ShowWord(word []string) string {
