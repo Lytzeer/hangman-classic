@@ -62,12 +62,14 @@ func Play(attempts int, word string, mottab []string, long int, list2 []string) 
 	count := 0
 	var present bool
 	var letter string
+	var wowowo string
 	for word != TabtoStr(mottab) {
-		if attempts == 0 {
-			for i := len(list2) - 8; i < len(list2)-1; i++ {
+		if attempts <= 0 {
+			fmt.Println()
+			for i := len(list2) - 9; i < len(list2)-1; i++ {
 				fmt.Println(list2[i])
 			}
-			fmt.Println("")
+			//fmt.Println("")
 			fmt.Println("Game over! The correct word was", word)
 			return
 		} else {
@@ -80,7 +82,7 @@ func Play(attempts int, word string, mottab []string, long int, list2 []string) 
 					return
 				} else {
 					attempts--
-					count += 7
+					count += 8
 				}
 			}
 			for i := 0; i < len(word); i++ {
@@ -94,14 +96,15 @@ func Play(attempts int, word string, mottab []string, long int, list2 []string) 
 			attempts--
 			if attempts >= 1 {
 				fmt.Println("Not present in the word, ", attempts, " attempts remaining")
+				fmt.Println()
 				for num := count; num < count+8; num++ {
 					fmt.Println(list2[num])
 				}
-				fmt.Println("")
 			}
 			count += 8
 		}
 		fmt.Println(TabtoStr(mottab))
+		fmt.Println(wowowo)
 	}
 	fmt.Println("Congrats !")
 }
