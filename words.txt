@@ -17,7 +17,7 @@ peinture
 macintosh
 souris
 route
-éxterieur
+Exterieur
 fenetre
 interieur
 intergouvernementalisation

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -8,6 +9,8 @@ import (
 	"os"
 	"time"
 )
+
+var file []byte
 
 func main() {
 	list2 := PosHangman()
@@ -21,7 +24,21 @@ func main() {
 	mot, attempts := InitGame(word)
 	mott := ShowWord(mot)
 	fmt.Println(mott)
+	if os.Args[2] == "--StartWith" {
+		filename := os.Args[3]
+		data, _ := ioutil.ReadFile(filename)
+		fmt.Println(data)
+		data = []byte(data)
+		fmt.Println(data)
+		var enr string
+		err := json.Unmarshal(data, enr)
+		fmt.Println(err)
+		fmt.Println(file)
+		fmt.Println(enr)
+		fmt.Println(string(data))
+		fmt.Println((data[3]))
 
+	}
 	Play(attempts, nouvmot, mot, long, list2)
 }
 func ChooseWord() (string, int) {
@@ -76,8 +93,10 @@ func Play(attempts int, word string, mottab []string, long int, list2 []string) 
 			present = false
 			fmt.Print("Choose: ")
 			fmt.Scan(&letter)
-			if letter == "STOP"{
-				
+			if Accent(letter) {
+				letter = AccentToLetters(letter)
+			} else if letter == "STOP" {
+				Save(attempts, count, word, mottab, wowowo)
 				return
 			}
 			if IsUse(letter, wowowo) {
@@ -191,3 +210,64 @@ func PrintWinLoose(b bool, tofind string) {
 	}
 }
 
+func AccentToLetters(letter string) string {
+	rep := ""
+	letter_rune := []rune(letter)
+	if letter_rune[0] >= rune(232) && letter_rune[0] <= rune(235) {
+		rep = "e"
+	} else if letter_rune[0] >= rune(224) && letter_rune[0] <= rune(230) {
+		rep = "a"
+	} else if letter_rune[0] >= rune(236) && letter_rune[0] <= rune(240) {
+		return "i"
+	} else if letter_rune[0] == rune(240) || letter_rune[0] >= rune(242) && letter_rune[0] <= rune(248) {
+		return "o"
+	} else if letter_rune[0] >= rune(249) && letter_rune[0] <= rune(252) {
+		return "u"
+	}
+	return rep
+}
+
+func Accent(letter string) bool {
+	return []rune(letter)[0] > 128
+}
+
+type data struct {
+	Attempts int
+	word     string
+	mottab   string
+}
+
+func Itoa(i int) string {
+	itoa := ""
+	for i != 0 {
+		ch := i % 10
+		i /= 10
+		itoa += string(ch + '0')
+	}
+	res := ""
+	for i := len(itoa) - 1; i >= 0; i-- {
+		res += string(itoa[i])
+	}
+	return res
+}
+
+func Save(a int, count int, w string, m []string, petitcul []string) {
+	filename := "save.txt"
+	if _, err := os.Stat(filename); os.IsNotExist(err) {
+		_, err := os.Create(filename)
+		if err != nil {
+			panic(err)
+		}
+	}
+	var data []string
+	data = append(data, Itoa(a))
+	data = append(data, Itoa(count))
+	data = append(data, string(w))
+	data = append(data, string(TabtoStr(m)))
+	for i := 0; i < len(petitcul); i++ {
+		data = append(data, petitcul[i])
+	}
+	file, _ = json.Marshal(data)
+	fmt.Println(string(file))
+	ioutil.WriteFile(filename, file, 0644)
+}
