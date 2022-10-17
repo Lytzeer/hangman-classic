@@ -142,3 +142,40 @@ func PosHangman() []string {
 	list2 = append(list2, hold2)
 	return list2
 }
+
+func IsUse(letter string, letter_list []string) bool {
+	for i := 0; i < len(letter_list); i++ {
+		if letter == letter_list[i] {
+			return false
+		}
+	}
+	return true
+}
+
+func PrintLetterUse(letter_use []string) {
+	word := "Letters already used : "
+	if len(letter_use) == 0 {
+		word += "None"
+		fmt.Println(word)
+		return
+	} else {
+		for i := 0; i < len(letter_use)-1; i++ {
+			word += letter_use[i] + " "
+		}
+		word += letter_use[len(letter_use)-1]
+		fmt.Println(word)
+		return
+	}
+}
+
+func PrintWinLoose(b bool, tofind string) {
+	if b == true {
+		fmt.Println("Congrats !")
+		return
+	} else {
+		word := "You loose ! The word you have to find was : "
+		word += tofind
+		fmt.Println(word)
+		return
+	}
+}
