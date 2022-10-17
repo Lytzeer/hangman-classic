@@ -111,7 +111,7 @@ func Play(attempts int, word string, mottab []string, long int, list2 []string) 
 			}
 			count += 8
 		}
-		if present && IsUse(letter, wowowo){
+		if present && IsUse(letter, wowowo) {
 			PrintLetterUse(wowowo)
 			fmt.Println()
 		}
