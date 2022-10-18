@@ -136,7 +136,7 @@ func Play(attempts int, word string, mottab []string, list2 []string, count int)
 				fmt.Println("Not present in the word, ", attempts, " attempts remaining")
 				fmt.Println()
 				//wowowo = append(wowowo, letter)
-				for num := count; num < count+7; num++ {
+				for num := count; num < count+8; num++ {
 					fmt.Println(list2[num])
 				}
 			}
