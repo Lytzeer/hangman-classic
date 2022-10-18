@@ -86,9 +86,9 @@ func Play(attempts int, word string, mottab []string, list2 []string, count int)
 	OScount := 0
 	OS := runtime.GOOS
 	if OS == "windows" {
-		OSCOUNT = 8
-	} else if OS == linux || OS == darwin {
-		OSCOUNT = 7
+		OScount = 8
+	} else if OS == "linux" || OS == "darwin" {
+		OScount = 7
 	}
 	//count := 0
 	var present bool
