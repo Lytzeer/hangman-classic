@@ -7,6 +7,7 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"runtime"
 	"time"
 )
 
@@ -20,17 +21,21 @@ func main() {
 			json.Unmarshal(data, &Game)
 			fmt.Println("Welcome back, you have", Game.Attempts, "attemps remaining!")
 			fmt.Println(ShowWord(Game.Word))
-			Play(Game.Attempts, Game.Solution, Game.Word, list2, Game.Count_line)
+			Play(Game.Attempts, Game.Solution, Game.Word, list2, Game.Count_line, Game.GameMod)
 		} else if os.Args[2] == "--hard" {
+			Game.Solution = ChooseWord()
 			Game.GameMod = "hard"
-			Game.Word, Game.Attempts = InitGame(Game.Solution)
+			Game.Word, Game.Attempts = InitGame(Game.Solution, "hard")
 			var nouvmot string
 			for i := 0; i < len(Game.Solution); i++ {
 				nouvmot += string(Game.Solution[i])
 			}
-			Play(Game.Attempts, nouvmot, Game.Word, list2, 0)
+			fmt.Println("Good Luck, you have", Game.Attempts, " attempts.")
+			mott := ShowWord(Game.Word)
+			fmt.Println(mott)
+			Play(Game.Attempts, nouvmot, Game.Word, list2, 0, Game.GameMod)
 		}
-	} else {
+	} else if len(os.Args) <= 2 {
 		Welcome()
 		Game.Solution = ChooseWord()
 		Game.GameMod = "normal"
@@ -38,11 +43,11 @@ func main() {
 		for i := 0; i < len(Game.Solution); i++ {
 			nouvmot += string(Game.Solution[i])
 		}
-		Game.Word, Game.Attempts = InitGame(Game.Solution)
+		Game.Word, Game.Attempts = InitGame(Game.Solution, "normal")
 		fmt.Println("Good Luck, you have", Game.Attempts, " attempts.")
 		mott := ShowWord(Game.Word)
 		fmt.Println(mott)
-		Play(Game.Attempts, nouvmot, Game.Word, list2, 0)
+		Play(Game.Attempts, nouvmot, Game.Word, list2, 0, Game.GameMod)
 	}
 }
 func ChooseWord() string {
@@ -68,31 +73,40 @@ func ChooseWord() string {
 	lent := rand.Intn(len(list))
 	return list[lent]
 }
-func InitGame(word string) ([]string, int) {
+func InitGame(word, mod string) ([]string, int) {
 	mot := []string{}
 	for i := 0; i < len(word); i++ {
 		mot = append(mot, "_")
 	}
-	var letterreveal int
-	for i := 0; i < (len(word)/2)-1; i++ {
-		letterreveal = rand.Intn(len(mot))
-		mot[letterreveal] = string(word[letterreveal])
+	if mod == "hard" {
+		var letterreveal int
+		for i := 0; i < (len(word)/3)-1; i++ {
+			letterreveal = rand.Intn(len(mot))
+			mot[letterreveal] = string(word[letterreveal])
+		}
+	} else {
+		var letterreveal int
+		for i := 0; i < (len(word)/2)-1; i++ {
+			letterreveal = rand.Intn(len(mot))
+			mot[letterreveal] = string(word[letterreveal])
+		}
 	}
 	return mot, 10
 }
 
-func Play(attempts int, word string, mottab []string, list2 []string, count int) {
-	//OScount := 0
-	// OS := runtime.GOOS
-	// if OS == "windows" {
-	// 	OScount = 8
-	// } else if OS == "linux" || OS == "darwin" {
-	// 	OScount = 7
-	// }
+func Play(attempts int, word string, mottab []string, list2 []string, count int, mod string) {
+	OScount := 0
+	OS := runtime.GOOS
+	if OS == "windows" {
+		OScount = 8
+	} else if OS == "linux" || OS == "darwin" {
+		OScount = 7
+	}
 	//count := 0
 	var present bool
 	var letter string
 	wowowo := []string{}
+	cpt := 0
 	for word != TabtoStr(mottab) {
 		if attempts <= 0 {
 			fmt.Println()
@@ -101,14 +115,14 @@ func Play(attempts int, word string, mottab []string, list2 []string, count int)
 			}
 			PrintWinLoose(false, word)
 			return
-		} else {
+		} else if mod == "normal" {
 			present = false
 			fmt.Print("Choose: ")
 			fmt.Scan(&letter)
 			if Accent(letter) {
 				letter = AccentToLetters(letter)
 			} else if letter == "STOP" {
-				Save(attempts, count, word, mottab, wowowo)
+				Save(attempts, count, word, mottab, wowowo, mod)
 				return
 			}
 			if IsUse(letter, wowowo) {
@@ -116,12 +130,49 @@ func Play(attempts int, word string, mottab []string, list2 []string, count int)
 			}
 			if len(letter) > 1 {
 				if letter == word {
+					Bim()
 					fmt.Println("Congrats !")
 					return
 				} else {
 					attempts--
-					count += 8
+					count += OScount
 				}
+			}
+			for i := 0; i < len(word); i++ {
+				if string(word[i]) == letter {
+					mottab[i] = letter
+					present = true
+				}
+			}
+		} else if mod != "normal" {
+			if cpt > 3 {
+				attempts--
+				fmt.Println("You have already choose 3 vowels ", attempts, " attempts remaining")
+			}
+			present = false
+			fmt.Print("Choose: ")
+			fmt.Scan(&letter)
+			if Accent(letter) {
+				letter = AccentToLetters(letter)
+			} else if letter == "STOP" {
+				Save(attempts, count, word, mottab, wowowo, mod)
+				return
+			}
+			if IsUse(letter, wowowo) {
+				present = true
+			}
+			if len(letter) > 1 {
+				if letter == word {
+					Bim()
+					fmt.Println("Congrats !")
+					return
+				} else {
+					attempts--
+					count += OScount
+				}
+			}
+			if IsVoyelle(letter){
+				cpt+=1
 			}
 			for i := 0; i < len(word); i++ {
 				if string(word[i]) == letter {
@@ -136,16 +187,21 @@ func Play(attempts int, word string, mottab []string, list2 []string, count int)
 				fmt.Println("Not present in the word, ", attempts, " attempts remaining")
 				fmt.Println()
 				//wowowo = append(wowowo, letter)
-				for num := count; num < count+8; num++ {
+				for num := count; num < count+OScount; num++ {
 					fmt.Println(list2[num])
 				}
 			}
-			// count += OScount
-			count += 8
+			count += OScount
+			//count += 8
 		}
 		if present && IsUse(letter, wowowo) {
-			PrintLetterUse(wowowo)
-			fmt.Println()
+			if mod == "hard" {
+				fmt.Println("Letters already used ", attempts, " attempts remaining")
+			} else {
+				attempts--
+				PrintLetterUse(wowowo)
+				fmt.Println()
+			}
 		}
 		fmt.Println(TabtoStr(mottab))
 		if !IsUse(letter, wowowo) {
@@ -221,7 +277,7 @@ func PrintWinLoose(b bool, tofind string) {
 		Bim()
 		return
 	} else {
-		word := "You loose ! The word you have to find was  : "
+		word := "You loose ! The word you have to find was : "
 		word += tofind
 		OhSnap()
 		fmt.Println(word)
@@ -270,7 +326,7 @@ func Itoa(i int) string {
 	return res
 }
 
-func Save(a int, count int, w string, m []string, petitcul []string) {
+func Save(a int, count int, w string, m []string, petitcul []string, mod string) {
 	filename := "save.txt"
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
 		_, err := os.Create(filename)
@@ -279,7 +335,7 @@ func Save(a int, count int, w string, m []string, petitcul []string) {
 		}
 	} else {
 		if err == nil {
-			Game := GameData{w, a, count, m, petitcul, "normal"}
+			Game := GameData{w, a, count, m, petitcul, mod}
 			data, err := json.Marshal(Game)
 			if err == nil {
 				ioutil.WriteFile("save.txt", data, 0644)
