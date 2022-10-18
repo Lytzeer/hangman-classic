@@ -1,1 +1,1 @@
-{"Solution":"macintosh","Attempts":9,"Count_line":8,"Word":["m","a","_","i","_","t","_","_","h"],"Letters_used":["z"]}
+{"Solution":"bateau","Attempts":8,"Count_line":16,"Word":["b","a","_","_","a","_"],"Letters_used":["z","o"]}
