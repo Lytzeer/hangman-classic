@@ -10,8 +10,6 @@ import (
 	"time"
 )
 
-var file []byte
-
 func main() {
 	Game := GameData{}
 	list2 := PosHangman()
@@ -119,7 +117,7 @@ func Play(attempts int, word string, mottab []string, list2 []string, count int)
 			if attempts >= 1 {
 				fmt.Println("Not present in the word, ", attempts, " attempts remaining")
 				fmt.Println()
-				wowowo = append(wowowo, letter)
+				//wowowo = append(wowowo, letter)
 				for num := count; num < count+8; num++ {
 					fmt.Println(list2[num])
 				}
@@ -131,6 +129,9 @@ func Play(attempts int, word string, mottab []string, list2 []string, count int)
 			fmt.Println()
 		}
 		fmt.Println(TabtoStr(mottab))
+		if !IsUse(letter, wowowo) {
+			wowowo = append(wowowo, letter)
+		}
 	}
 	PrintWinLoose(true, word)
 }
@@ -259,10 +260,7 @@ func Save(a int, count int, w string, m []string, petitcul []string) {
 			Game := GameData{w, a, count, m, petitcul}
 			data, err := json.Marshal(Game)
 			if err == nil {
-				fmt.Println(data)
-				fmt.Println(Game.Attempts)
 				ioutil.WriteFile("save.txt", data, 0644)
-				fmt.Println("caca")
 			} else {
 				fmt.Println(err)
 			}

@@ -1,1 +1,1 @@
-{"Solution":"voiture","Attempts":10,"Count_line":0,"Word":["v","_","_","_","u","_","e"],"Letters_used":[]}
+{"Solution":"esclave","Attempts":9,"Count_line":8,"Word":["e","_","c","_","a","v","e"],"Letters_used":["z"]}
