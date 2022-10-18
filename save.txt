@@ -1,1 +1,1 @@
-{"Solution":"macintosh","Attempts":9,"Count_line":8,"Word":["_","a","c","i","_","_","_","s","h"],"Letters_used":["z"]}
+{"Solution":"macintosh","Attempts":9,"Count_line":8,"Word":["m","a","_","i","_","t","_","_","h"],"Letters_used":["z"]}
