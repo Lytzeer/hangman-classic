@@ -221,7 +221,7 @@ func PrintWinLoose(b bool, tofind string) {
 		Bim()
 		return
 	} else {
-		word := "You loose ! The word you have to find was : "
+		word := "You loose ! The word you have to find was  : "
 		word += tofind
 		OhSnap()
 		fmt.Println(word)
