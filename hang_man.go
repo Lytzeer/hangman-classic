@@ -7,6 +7,7 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"runtime"
 	"time"
 )
 
@@ -82,6 +83,13 @@ func InitGame(word string) ([]string, int) {
 }
 
 func Play(attempts int, word string, mottab []string, list2 []string, count int) {
+	OScount := 0
+	OS := runtime.GOOS
+	if OS == "windows" {
+		OScount = 8
+	} else if OS == "linux" || OS == "darwin" {
+		OScount = 7
+	}
 	//count := 0
 	var present bool
 	var letter string
@@ -89,7 +97,7 @@ func Play(attempts int, word string, mottab []string, list2 []string, count int)
 	for word != TabtoStr(mottab) {
 		if attempts <= 0 {
 			fmt.Println()
-			for i := len(list2) - 9; i < len(list2)-1; i++ {
+			for i := len(list2) - 8; i < len(list2)-1; i++ {
 				fmt.Println(list2[i])
 			}
 			PrintWinLoose(false, word)
@@ -113,7 +121,7 @@ func Play(attempts int, word string, mottab []string, list2 []string, count int)
 					return
 				} else {
 					attempts--
-					count += 8
+					count += 9
 				}
 			}
 			for i := 0; i < len(word); i++ {
@@ -129,11 +137,11 @@ func Play(attempts int, word string, mottab []string, list2 []string, count int)
 				fmt.Println("Not present in the word, ", attempts, " attempts remaining")
 				fmt.Println()
 				//wowowo = append(wowowo, letter)
-				for num := count; num < count+8; num++ {
+				for num := count; num < count+OScount; num++ {
 					fmt.Println(list2[num])
 				}
 			}
-			count += 8
+			count += OScount
 		}
 		if present && IsUse(letter, wowowo) {
 			PrintLetterUse(wowowo)
