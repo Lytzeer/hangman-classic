@@ -21,15 +21,25 @@ func main() {
 			fmt.Println("Welcome back, you have", Game.Attempts, "attemps remaining!")
 			fmt.Println(ShowWord(Game.Word))
 			Play(Game.Attempts, Game.Solution, Game.Word, list2, Game.Count_line)
+		} else if os.Args[2] == "--hard" {
+			Game.GameMod = "hard"
+			Game.Word, Game.Attempts = InitGame(Game.Solution)
+			var nouvmot string
+			for i := 0; i < len(Game.Solution); i++ {
+				nouvmot += string(Game.Solution[i])
+			}
+			Play(Game.Attempts, nouvmot, Game.Word, list2, 0)
 		}
 	} else {
-		fmt.Println("Good Luck, you have ", Game.Attempts, " attempts.")
+		Welcome()
 		Game.Solution = ChooseWord()
+		Game.GameMod = "normal"
 		var nouvmot string
-		for i := 0; i < len(Game.Solution)-1; i++ {
+		for i := 0; i < len(Game.Solution); i++ {
 			nouvmot += string(Game.Solution[i])
 		}
 		Game.Word, Game.Attempts = InitGame(Game.Solution)
+		fmt.Println("Good Luck, you have", Game.Attempts, " attempts.")
 		mott := ShowWord(Game.Word)
 		fmt.Println(mott)
 		Play(Game.Attempts, nouvmot, Game.Word, list2, 0)
@@ -60,7 +70,7 @@ func ChooseWord() string {
 }
 func InitGame(word string) ([]string, int) {
 	mot := []string{}
-	for i := 0; i < len(word)-1; i++ {
+	for i := 0; i < len(word); i++ {
 		mot = append(mot, "_")
 	}
 	var letterreveal int
@@ -70,6 +80,7 @@ func InitGame(word string) ([]string, int) {
 	}
 	return mot, 10
 }
+
 func Play(attempts int, word string, mottab []string, list2 []string, count int) {
 	//count := 0
 	var present bool
@@ -135,6 +146,7 @@ func Play(attempts int, word string, mottab []string, list2 []string, count int)
 	}
 	PrintWinLoose(true, word)
 }
+
 func ShowWord(word []string) string {
 	var motstr string
 	for _, ch := range word {
@@ -198,10 +210,12 @@ func PrintLetterUse(letter_use []string) {
 func PrintWinLoose(b bool, tofind string) {
 	if b == true {
 		fmt.Println("Congrats !")
+		Bim()
 		return
 	} else {
 		word := "You loose ! The word you have to find was : "
 		word += tofind
+		OhSnap()
 		fmt.Println(word)
 		return
 	}
@@ -257,7 +271,7 @@ func Save(a int, count int, w string, m []string, petitcul []string) {
 		}
 	} else {
 		if err == nil {
-			Game := GameData{w, a, count, m, petitcul}
+			Game := GameData{w, a, count, m, petitcul, "normal"}
 			data, err := json.Marshal(Game)
 			if err == nil {
 				ioutil.WriteFile("save.txt", data, 0644)
@@ -276,4 +290,39 @@ type GameData struct {
 	Count_line   int
 	Word         []string
 	Letters_used []string
+	GameMod      string
+}
+
+func OhSnap() {
+	content, err := ioutil.ReadFile("ohsnap.txt")
+
+	if err == nil {
+		fmt.Printf(string(content))
+	}
+	fmt.Println()
+}
+
+func Bim() {
+	content, err := ioutil.ReadFile("bim.txt")
+
+	if err == nil {
+		fmt.Printf(string(content))
+	}
+	fmt.Println()
+}
+
+func Welcome() {
+	content, err := ioutil.ReadFile("welcome.txt")
+
+	if err == nil {
+		fmt.Printf(string(content))
+	}
+	fmt.Println()
+}
+
+func IsVoyelle(letter string) bool {
+	if letter == "a" || letter == "e" || letter == "i" || letter == "o" || letter == "u" || letter == "y" {
+		return true
+	}
+	return false
 }
