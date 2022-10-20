@@ -13,12 +13,12 @@ import (
 
 func main() {
 	taille := 0
-	se := runtime.GOOS
-	if se == "windows" {
+	OS := runtime.GOOS
+	if OS == "windows" {
 		taille = 1
 	}
 	Game := GameData{}
-	list2 := PosHangman()
+	hang_pos := PosHangman()
 	if len(os.Args) > 2 {
 		if os.Args[2] == "--StartWith" {
 			filename := os.Args[3]
@@ -27,10 +27,10 @@ func main() {
 			fmt.Println("Welcome back, you have", Game.Attempts, "attemps remaining!")
 			fmt.Println(ShowWord(Game.Word))
 			os.Remove("save.txt")
-			Play(Game.Attempts, Game.Solution, Game.Word, list2, Game.Count_line, Game.GameMod)
+			Play(Game.Attempts, Game.Solution, Game.Word, hang_pos, Game.Count_line, Game.Gamemod_game)
 		} else if os.Args[2] == "--hard" {
 			Game.Solution = ChooseWord()
-			Game.GameMod = "hard"
+			Game.Gamemod_game = "hard"
 			Game.Word, Game.Attempts = InitGame(Game.Solution, "hard")
 			var nouvmot string
 			for i := 0; i < len(Game.Solution)-taille; i++ {
@@ -39,12 +39,12 @@ func main() {
 			fmt.Println("Good Luck, you have", Game.Attempts, " attempts.")
 			mott := ShowWord(Game.Word)
 			fmt.Println(mott)
-			Play(Game.Attempts, nouvmot, Game.Word, list2, 0, Game.GameMod)
+			Play(Game.Attempts, nouvmot, Game.Word, hang_pos, 0, Game.Gamemod_game)
 		}
 	} else if len(os.Args) <= 2 {
 		Welcome()
 		Game.Solution = ChooseWord()
-		Game.GameMod = "normal"
+		Game.Gamemod_game = "normal"
 		var nouvmot string
 		for i := 0; i < len(Game.Solution)-taille; i++ {
 			nouvmot += string(Game.Solution[i])
@@ -53,7 +53,7 @@ func main() {
 		fmt.Println("Good Luck, you have", Game.Attempts, " attempts.")
 		mott := ShowWord(Game.Word)
 		fmt.Println(mott)
-		Play(Game.Attempts, nouvmot, Game.Word, list2, 0, Game.GameMod)
+		Play(Game.Attempts, nouvmot, Game.Word, hang_pos, 0, Game.Gamemod_game)
 	}
 }
 func ChooseWord() string {
@@ -79,7 +79,7 @@ func ChooseWord() string {
 	lent := rand.Intn(len(list))
 	return list[lent]
 }
-func InitGame(word, mod string) ([]string, int) {
+func InitGame(word, mod_game string) ([]string, int) {
 	os := runtime.GOOS
 	taille := 0
 	if os == "windows" {
@@ -89,7 +89,7 @@ func InitGame(word, mod string) ([]string, int) {
 	for i := 0; i < len(word)-taille; i++ {
 		mot = append(mot, "_")
 	}
-	if mod == "hard" {
+	if mod_game == "hard" {
 		var letterreveal int
 		for i := 0; i < (len(word)/3)-1; i++ {
 			letterreveal = rand.Intn(len(mot))
@@ -105,7 +105,7 @@ func InitGame(word, mod string) ([]string, int) {
 	return mot, 10
 }
 
-func Play(attempts int, word string, mottab []string, list2 []string, count int, mod string) {
+func Play(attempts int, word string, word_array []string, hang_pos []string, count int, mod_game string) {
 	OScount := 0
 	OS := runtime.GOOS
 	if OS == "windows" {
@@ -116,27 +116,27 @@ func Play(attempts int, word string, mottab []string, list2 []string, count int,
 	//count := 0
 	var present bool
 	var letter string
-	wowowo := []string{}
+	letters_list_used := []string{}
 	cpt := 0
-	for word != TabtoStr(mottab) {
+	for word != TabtoStr(word_array) {
 		if attempts <= 0 {
 			fmt.Println()
-			for i := len(list2) - 8; i < len(list2)-1; i++ {
-				fmt.Println(list2[i])
+			for i := len(hang_pos) - 8; i < len(hang_pos)-1; i++ {
+				fmt.Println(hang_pos[i])
 			}
 			PrintWinLoose(false, word)
 			return
-		} else if mod == "normal" {
+		} else if mod_game == "normal" {
 			present = false
 			fmt.Print("Choose: ")
 			fmt.Scan(&letter)
 			if Accent(letter) {
 				letter = AccentToLetters(letter)
 			} else if letter == "STOP" {
-				Save(attempts, count, word, mottab, wowowo, mod)
+				Save(attempts, count, word, word_array, letters_list_used, mod_game)
 				return
 			}
-			if IsUse(letter, wowowo) {
+			if IsUse(letter, letters_list_used) {
 				present = true
 			}
 			if len(letter) > 1 {
@@ -151,11 +151,11 @@ func Play(attempts int, word string, mottab []string, list2 []string, count int,
 			}
 			for i := 0; i < len(word); i++ {
 				if string(word[i]) == letter {
-					mottab[i] = letter
+					word_array[i] = letter
 					present = true
 				}
 			}
-		} else if mod != "normal" {
+		} else if mod_game != "normal" {
 			if cpt > 3 {
 				attempts--
 				fmt.Println("You have already choose 3 vowels ", attempts, " attempts remaining")
@@ -166,10 +166,10 @@ func Play(attempts int, word string, mottab []string, list2 []string, count int,
 			if Accent(letter) {
 				letter = AccentToLetters(letter)
 			} else if letter == "STOP" {
-				Save(attempts, count, word, mottab, wowowo, mod)
+				Save(attempts, count, word, word_array, letters_list_used, mod_game)
 				return
 			}
-			if IsUse(letter, wowowo) {
+			if IsUse(letter, letters_list_used) {
 				present = true
 			}
 			if len(letter) > 1 {
@@ -187,7 +187,7 @@ func Play(attempts int, word string, mottab []string, list2 []string, count int,
 			}
 			for i := 0; i < len(word); i++ {
 				if string(word[i]) == letter {
-					mottab[i] = letter
+					word_array[i] = letter
 					present = true
 				}
 			}
@@ -197,26 +197,26 @@ func Play(attempts int, word string, mottab []string, list2 []string, count int,
 			if attempts >= 1 {
 				fmt.Println("Not present in the word, ", attempts, " attempts remaining")
 				fmt.Println()
-				//wowowo = append(wowowo, letter)
+				//letters_list_used = append(letters_list_used, letter)
 				for num := count; num < count+OScount; num++ {
-					fmt.Println(list2[num])
+					fmt.Println(hang_pos[num])
 				}
 			}
 			count += OScount
 			//count += 8
 		}
-		if present && IsUse(letter, wowowo) {
-			if mod == "hard" {
+		if present && IsUse(letter, letters_list_used) {
+			if mod_game == "hard" {
 				fmt.Println("Letters already used ", attempts, " attempts remaining")
 			} else {
 				attempts--
-				PrintLetterUse(wowowo)
+				PrintLetterUse(letters_list_used)
 				fmt.Println()
 			}
 		}
-		fmt.Println(TabtoStr(mottab))
-		if !IsUse(letter, wowowo) {
-			wowowo = append(wowowo, letter)
+		fmt.Println(TabtoStr(word_array))
+		if !IsUse(letter, letters_list_used) {
+			letters_list_used = append(letters_list_used, letter)
 		}
 	}
 	PrintWinLoose(true, word)
@@ -237,7 +237,7 @@ func TabtoStr(word []string) string {
 	return str
 }
 func PosHangman() []string {
-	list2 := []string{}
+	hang_pos := []string{}
 	bod, err := ioutil.ReadFile("hangman.txt")
 	if err != nil {
 		log.Fatalf("unable to read file: %v", err)
@@ -248,13 +248,13 @@ func PosHangman() []string {
 			hold2 = hold2 + string(d)
 		} else {
 			if hold2 != "" {
-				list2 = append(list2, hold2)
+				hang_pos = append(hang_pos, hold2)
 				hold2 = ""
 			}
 		}
 	}
-	list2 = append(list2, hold2)
-	return list2
+	hang_pos = append(hang_pos, hold2)
+	return hang_pos
 }
 
 func IsUse(letter string, letter_list []string) bool {
@@ -318,9 +318,9 @@ func Accent(letter string) bool {
 }
 
 type data struct {
-	Attempts int
-	word     string
-	mottab   string
+	Attempts   int
+	word       string
+	word_array string
 }
 
 func Itoa(i int) string {
@@ -337,13 +337,13 @@ func Itoa(i int) string {
 	return res
 }
 
-func Save(a int, count int, w string, m []string, petitcul []string, mod string) {
+func Save(a int, count int, w string, m []string, letters_list_used []string, mod_game string) {
 	filename := "save.txt"
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
 		_, err := os.Create(filename)
 		if err == nil {
 			if err == nil {
-				Game := GameData{w, a, count, m, petitcul, mod}
+				Game := GameData{w, a, count, m, letters_list_used, mod_game}
 				data, err := json.Marshal(Game)
 				if err == nil {
 					ioutil.WriteFile("save.txt", data, 0644)
@@ -354,7 +354,7 @@ func Save(a int, count int, w string, m []string, petitcul []string, mod string)
 		}
 	} else {
 		if err == nil {
-			Game := GameData{w, a, count, m, petitcul, mod}
+			Game := GameData{w, a, count, m, letters_list_used, mod_game}
 			data, err := json.Marshal(Game)
 			if err == nil {
 				ioutil.WriteFile("save.txt", data, 0644)
@@ -371,7 +371,7 @@ type GameData struct {
 	Count_line   int
 	Word         []string
 	Letters_used []string
-	GameMod      string
+	Gamemod_game string
 }
 
 func OhSnap() {
