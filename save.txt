@@ -1,1 +1,0 @@
-{"Solution":"mousse","Attempts":10,"Count_line":0,"Word":["_","_","_","s","s","e"],"Letters_used":["s","e"],"GameMod":"normal"}

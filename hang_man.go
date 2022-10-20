@@ -26,6 +26,7 @@ func main() {
 			json.Unmarshal(data, &Game)
 			fmt.Println("Welcome back, you have", Game.Attempts, "attemps remaining!")
 			fmt.Println(ShowWord(Game.Word))
+			os.Remove("save.txt")
 			Play(Game.Attempts, Game.Solution, Game.Word, list2, Game.Count_line, Game.GameMod)
 		} else if os.Args[2] == "--hard" {
 			Game.Solution = ChooseWord()
@@ -341,7 +342,15 @@ func Save(a int, count int, w string, m []string, petitcul []string, mod string)
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
 		_, err := os.Create(filename)
 		if err == nil {
-			panic(err)
+			if err == nil {
+				Game := GameData{w, a, count, m, petitcul, mod}
+				data, err := json.Marshal(Game)
+				if err == nil {
+					ioutil.WriteFile("save.txt", data, 0644)
+				} else {
+					fmt.Println(err)
+				}
+			}
 		}
 	} else {
 		if err == nil {
@@ -352,8 +361,6 @@ func Save(a int, count int, w string, m []string, petitcul []string, mod string)
 			} else {
 				fmt.Println(err)
 			}
-		} else {
-			fmt.Println("b")
 		}
 	}
 }
