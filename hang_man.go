@@ -12,6 +12,11 @@ import (
 )
 
 func main() {
+	taille := 0
+	se := runtime.GOOS
+	if se == "windows" {
+		taille = 1
+	}
 	Game := GameData{}
 	list2 := PosHangman()
 	if len(os.Args) > 2 {
@@ -27,7 +32,7 @@ func main() {
 			Game.GameMod = "hard"
 			Game.Word, Game.Attempts = InitGame(Game.Solution, "hard")
 			var nouvmot string
-			for i := 0; i < len(Game.Solution); i++ {
+			for i := 0; i < len(Game.Solution)-taille; i++ {
 				nouvmot += string(Game.Solution[i])
 			}
 			fmt.Println("Good Luck, you have", Game.Attempts, " attempts.")
@@ -40,7 +45,7 @@ func main() {
 		Game.Solution = ChooseWord()
 		Game.GameMod = "normal"
 		var nouvmot string
-		for i := 0; i < len(Game.Solution); i++ {
+		for i := 0; i < len(Game.Solution)-taille; i++ {
 			nouvmot += string(Game.Solution[i])
 		}
 		Game.Word, Game.Attempts = InitGame(Game.Solution, "normal")
@@ -74,8 +79,13 @@ func ChooseWord() string {
 	return list[lent]
 }
 func InitGame(word, mod string) ([]string, int) {
+	os := runtime.GOOS
+	taille := 0
+	if os == "windows" {
+		taille = 1
+	}
 	mot := []string{}
-	for i := 0; i < len(word); i++ {
+	for i := 0; i < len(word)-taille; i++ {
 		mot = append(mot, "_")
 	}
 	if mod == "hard" {
@@ -171,8 +181,8 @@ func Play(attempts int, word string, mottab []string, list2 []string, count int,
 					count += OScount
 				}
 			}
-			if IsVoyelle(letter){
-				cpt+=1
+			if IsVoyelle(letter) {
+				cpt += 1
 			}
 			for i := 0; i < len(word); i++ {
 				if string(word[i]) == letter {
