@@ -207,9 +207,14 @@ func Play(attempts int, word string, word_array []string, hang_pos []string, cou
 		}
 		if present && IsUse(letter, letters_list_used) {
 			if mod_game == "hard" {
-				fmt.Println("Letters already used ", attempts, " attempts remaining")
-			} else {
 				attempts--
+				fmt.Println("Letters already used ", attempts, " attempts remaining")
+				for num := count; num < count+OScount; num++ {
+					fmt.Println(hang_pos[num])
+				}
+				count += OScount
+			} else {
+				//attempts--
 				PrintLetterUse(letters_list_used)
 				fmt.Println()
 			}
@@ -392,6 +397,13 @@ func Bim() {
 	fmt.Println()
 }
 
+func IsVoyelle(letter string) bool {
+	if letter == "a" || letter == "e" || letter == "i" || letter == "o" || letter == "u" || letter == "y" {
+		return true
+	}
+	return false
+}
+
 func Welcome() {
 	content, err := ioutil.ReadFile("welcome.txt")
 
@@ -399,11 +411,4 @@ func Welcome() {
 		fmt.Printf(string(content))
 	}
 	fmt.Println()
-}
-
-func IsVoyelle(letter string) bool {
-	if letter == "a" || letter == "e" || letter == "i" || letter == "o" || letter == "u" || letter == "y" {
-		return true
-	}
-	return false
 }
