@@ -26,6 +26,7 @@
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
+        <li><a href="#run">Run the project </a></li>
       </ul>
     </li>
   </ol>
@@ -37,6 +38,8 @@
 ### Built With
 
 ![Golang](https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Go_Logo_Blue.svg/768px-Go_Logo_Blue.svg.png?20191207190041)
+
+Two mod games hard or normal
 
 </br>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -63,4 +66,20 @@ Clone the repo
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+### Run the project 
 
+```
+go run /main/main.go wordlist/words.txt
+```
+
+##### If you want to start the game in hard mod:
+
+```
+go run /main/main.go wordlist/words.txt --hard
+```
+
+##### And if you want to restart a game save:
+
+```
+go run ./main/main.go ./wordlist/words.txt --StartWith save.txt
+```
