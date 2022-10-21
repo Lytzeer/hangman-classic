@@ -78,6 +78,6 @@ go run ./main/main.go ./wordlist/words.txt --StartWith save.txt
 ```
 ### Commands in game 
 
-```Submit one letter or one word```
 
-```STOP the game, save in a file```
+##### Submit one letter or one word
+##### STOP the game, save in a file
