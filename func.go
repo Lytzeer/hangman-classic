@@ -1,4 +1,4 @@
-package main
+package funct
 
 import (
 	"encoding/json"
@@ -11,51 +11,6 @@ import (
 	"time"
 )
 
-func main() {
-	taille := 0
-	OS := runtime.GOOS
-	if OS == "windows" {
-		taille = 1
-	}
-	Game := GameData{}
-	hang_pos := PosHangman()
-	if len(os.Args) > 2 {
-		if os.Args[2] == "--StartWith" {
-			filename := os.Args[3]
-			data, _ := ioutil.ReadFile(filename)
-			json.Unmarshal(data, &Game)
-			fmt.Println("Welcome back, you have", Game.Attempts, "attemps remaining!")
-			fmt.Println(ShowWord(Game.Word))
-			os.Remove("save.txt")
-			Play(Game.Attempts, Game.Solution, Game.Word, hang_pos, Game.Count_line, Game.Gamemod_game)
-		} else if os.Args[2] == "--hard" {
-			Game.Solution = ChooseWord()
-			Game.Gamemod_game = "hard"
-			Game.Word, Game.Attempts = InitGame(Game.Solution, "hard")
-			var nouvmot string
-			for i := 0; i < len(Game.Solution)-taille; i++ {
-				nouvmot += string(Game.Solution[i])
-			}
-			fmt.Println("Good Luck, you have", Game.Attempts, " attempts.")
-			mott := ShowWord(Game.Word)
-			fmt.Println(mott)
-			Play(Game.Attempts, nouvmot, Game.Word, hang_pos, 0, Game.Gamemod_game)
-		}
-	} else if len(os.Args) <= 2 {
-		Welcome()
-		Game.Solution = ChooseWord()
-		Game.Gamemod_game = "normal"
-		var nouvmot string
-		for i := 0; i < len(Game.Solution)-taille; i++ {
-			nouvmot += string(Game.Solution[i])
-		}
-		Game.Word, Game.Attempts = InitGame(Game.Solution, "normal")
-		fmt.Println("Good Luck, you have", Game.Attempts, " attempts.")
-		mott := ShowWord(Game.Word)
-		fmt.Println(mott)
-		Play(Game.Attempts, nouvmot, Game.Word, hang_pos, 0, Game.Gamemod_game)
-	}
-}
 func ChooseWord() string {
 	name := os.Args[1]
 	body, err := ioutil.ReadFile(name)
@@ -243,7 +198,7 @@ func TabtoStr(word []string) string {
 }
 func PosHangman() []string {
 	hang_pos := []string{}
-	bod, err := ioutil.ReadFile("hangman.txt")
+	bod, err := ioutil.ReadFile("ascii/hangman.txt")
 	if err != nil {
 		log.Fatalf("unable to read file: %v", err)
 	}
@@ -380,7 +335,7 @@ type GameData struct {
 }
 
 func OhSnap() {
-	content, err := ioutil.ReadFile("ohsnap.txt")
+	content, err := ioutil.ReadFile("ascii/ohsnap.txt")
 
 	if err == nil {
 		fmt.Printf(string(content))
@@ -389,7 +344,7 @@ func OhSnap() {
 }
 
 func Bim() {
-	content, err := ioutil.ReadFile("bim.txt")
+	content, err := ioutil.ReadFile("ascii/bim.txt")
 
 	if err == nil {
 		fmt.Printf(string(content))
@@ -405,7 +360,7 @@ func IsVoyelle(letter string) bool {
 }
 
 func Welcome() {
-	content, err := ioutil.ReadFile("welcome.txt")
+	content, err := ioutil.ReadFile("ascii/welcome.txt")
 
 	if err == nil {
 		fmt.Printf(string(content))
