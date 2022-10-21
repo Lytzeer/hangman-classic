@@ -12,26 +12,6 @@
   </p>
 </div>
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-        <li><a href="#run">Run the project</a></li>
-      </ul>
-    </li>
-  </ol>
-</details>
-
 
 
 <!-- ABOUT THE PROJECT -->
@@ -45,6 +25,17 @@ Two mod games hard or normal
 
 <!-- GETTING STARTED -->
 ## Getting Started
+
+Here we have created a golang version of the famous hangman game you have 10 attempts to find a word, some letters will be revealed at the start, the objective is to find them all in order to win the game.
+
+### Features available
+
+<ul>
+  <li>Save the game in a file and restart after</li>
+  <li>Hard mod or normal mod (with more difficulties).</li>
+  <li>Ascii Art (welcome, bim, or oh snap).</li>
+</ul>
+
 
 ### Prerequisites
 
@@ -72,7 +63,7 @@ cd hangman-classic
 ```
 go run /main/main.go wordlist/words.txt
 ```
-
+```words.txt , words2.txt or words3.txt```
 ##### If you want to start the game in hard mod:
 
 ```
@@ -84,4 +75,8 @@ go run /main/main.go wordlist/words.txt --hard
 ```
 go run ./main/main.go ./wordlist/words.txt --StartWith save.txt
 ```
+### Commands in game 
 
+```Submit one letter or one word```
+
+```STOP the game, save in a file```
