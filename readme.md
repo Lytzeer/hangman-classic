@@ -26,7 +26,7 @@
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
-        <li><a href="#run">Run the project </a></li>
+        <li><a href="#run">Run the project</a></li>
       </ul>
     </li>
   </ol>
@@ -42,9 +42,6 @@
 Two mod games hard or normal
 
 </br>
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -64,9 +61,13 @@ Clone the repo
    git clone https://ytrack.learn.ynov.com/git/lmatheo/hangman-classic.git
    ```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Run the project 
+<!-- RUN THE PROJECT -->
+### Run the project
+```
+cd hangman-classic
+```
+</br>
 
 ```
 go run /main/main.go wordlist/words.txt
@@ -83,3 +84,4 @@ go run /main/main.go wordlist/words.txt --hard
 ```
 go run ./main/main.go ./wordlist/words.txt --StartWith save.txt
 ```
+
