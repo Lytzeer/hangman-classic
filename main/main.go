@@ -10,6 +10,10 @@ import (
 )
 
 func main() {
+	if len(os.Args) == 1 {
+		fmt.Println("Expect one argument")
+		return
+	}
 	taille := 0
 	OS := runtime.GOOS
 	if OS == "windows" {
